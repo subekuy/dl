@@ -1,40 +1,36 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Download Template Video</title>
-  <style>
-    body { font-family: sans-serif; padding: 2em; }
-    input, button { font-size: 1em; margin: 0.5em 0; }
-    a { display: block; margin-top: 1em; font-weight: bold; }
-  </style>
+  <title>Redirecting...</title>
 </head>
 <body>
-  <h1>Download Template Video via Torrent</h1>
-  <p>Masukkan ID template:</p>
-  <input type="text" id="torrentId" placeholder="Contoh: 001" />
-  <button onclick="generateLink()">Buat Link</button>
-  <div id="linkResult"></div>
-
   <script>
-    function generateLink() {
-      const id = document.getElementById('torrentId').value.trim();
-      if (!id) return;
+    // Ambil ID dari URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-      const url = `https://okecyu.my.id/dl/${id}.torrent`;
-      document.getElementById('linkResult').innerHTML =
-        `<a href="${url}" download>Download ${id}.torrent</a>`;
+    if (!id) {
+      document.body.innerText = "No ID specified.";
+      throw new Error("Missing ID");
     }
-  </script>
-  <script>
-  fetch('list.json')
-    .then(res => res.json())
-    .then(data => {
-      const list = data.map(item =>
-        `<li><a href="${item.id}.torrent" download>${item.name} (${item.id})</a></li>`
-      ).join('');
-      document.body.innerHTML += `<ul>${list}</ul>`;
-    });
+
+    // Ambil mapping dari map.json
+    fetch("map.json")
+      .then(res => res.json())
+      .then(map => {
+        const filename = map[id];
+        if (filename) {
+          // Redirect ke file di sub-folder 'torrents/'
+          window.location.href = "torrents/" + filename;
+        } else {
+          document.body.innerText = "File not found for ID: " + id;
+        }
+      })
+      .catch(err => {
+        document.body.innerText = "Error loading mapping.";
+        console.error(err);
+      });
   </script>
 </body>
 </html>
