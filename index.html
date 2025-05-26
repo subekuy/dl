@@ -21,10 +21,20 @@
       const id = document.getElementById('torrentId').value.trim();
       if (!id) return;
 
-      const url = `https://username.github.io/download/${id}.torrent`;
+      const url = `https://okecyu.my.id/dl/${id}.torrent`;
       document.getElementById('linkResult').innerHTML =
         `<a href="${url}" download>Download ${id}.torrent</a>`;
     }
+  </script>
+  <script>
+  fetch('list.json')
+    .then(res => res.json())
+    .then(data => {
+      const list = data.map(item =>
+        `<li><a href="${item.id}.torrent" download>${item.name} (${item.id})</a></li>`
+      ).join('');
+      document.body.innerHTML += `<ul>${list}</ul>`;
+    });
   </script>
 </body>
 </html>
