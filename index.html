@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Template Video</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    input, button { font-size: 1em; margin: 0.5em 0; }
+    a { display: block; margin-top: 1em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Download Template Video via Torrent</h1>
+  <p>Masukkan ID template:</p>
+  <input type="text" id="torrentId" placeholder="Contoh: 001" />
+  <button onclick="generateLink()">Buat Link</button>
+  <div id="linkResult"></div>
+
+  <script>
+    function generateLink() {
+      const id = document.getElementById('torrentId').value.trim();
+      if (!id) return;
+
+      const url = `https://username.github.io/download/${id}.torrent`;
+      document.getElementById('linkResult').innerHTML =
+        `<a href="${url}" download>Download ${id}.torrent</a>`;
+    }
+  </script>
+</body>
+</html>
